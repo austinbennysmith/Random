@@ -4,16 +4,21 @@ selectIdx = [];       % used to highlight node selected in listbox
 pts = zeros(0,2);     % x/y coordinates of vertices
 adj = sparse([]);     % sparse adjacency matrix (undirected)
 edd=sparse([]);
-MinXLim=0;
-MaxXLim=10;
 
-MinYLim=0;
-MaxYLim=10;
+npoly = 5; % number of sides in regular polygon
+sideLength = 1;
+%myrad = 1; % Circumscribed radius
+myrad = (sideLength * sin(0.5*(pi-(2*pi)/npoly)))/sin((2*pi)/npoly); % Circumscribed radius
+disp('myrad')
+disp(num2str(myrad))
+xcenter = 0; % center of circumscribed circle (x coordinate)
+ycenter = 0; % center of circumscribed circle (y coordinate)
 
-npoly = 4; % number of sides in regular polygon
-myrad = 1; % Circumscribed radius
-xcenter = 5; % center of circumscribed circle (x coordinate)
-ycenter = 5; % center of circumscribed circle (y coordinate)
+MinXLim=-1.5*myrad;
+MaxXLim=1.5*myrad;
+
+MinYLim=-1.5*myrad;
+MaxYLim=1.5*myrad;
 
 lengthTotal = 0;
 
@@ -41,6 +46,9 @@ for i=1:100
     %if poly==1
     for nsides=0:npoly
         thetanow = nsides*(2*pi/npoly);
+        if npoly/2 == round(npoly/2) % testing if it's an even number of sides
+          thetanow = thetanow + pi/npoly
+        endif
         pts(end+1,:) = [xcenter+myrad*sin(thetanow), ycenter+myrad*cos(thetanow)];
         %disp(pts)
         adj(end+1, end+1)=0;
@@ -122,7 +130,7 @@ for i=1:100
             % add the new edge
             lengthTotal = lengthTotal + sqrt(((pts(prevIdx,1)-pts(idx,1))^2)+((pts(prevIdx,2)-pts(idx,2))^2));
             delete(h.txt3)
-            h.txt3 = text(MinXLim + 3, MaxYLim - 3, ...
+            h.txt3 = text(MinXLim + 0.3*myrad, MaxYLim - 0.3*myrad, ...
               strcat('Total Length: ', num2str(lengthTotal)), ...
               'HitTest','off', 'FontSize',15);
             adj(prevIdx,idx) =sqrt(((pts(prevIdx,1)-pts(idx,1))^2)+((pts(prevIdx,2)-pts(idx,2))^2));
