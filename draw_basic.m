@@ -1,4 +1,13 @@
-function draw_basic = draw_basic(npoly)
+function draw_basic(npoly)
+  
+  %Code adapted for use in Octave by Benny Smith and Dan Harris (Harris Lab, Brown Univ.)
+
+  %Original code from:
+  %Amin Jalilzadeh Razin (2021). 
+  %Interactive graph in matlab 
+  %(https://www.mathworks.com/matlabcentral/fileexchange/91565-interactive-graph-in-matlab)
+  %MATLAB Central File Exchange. Retrieved July 17, 2021.
+  
   showLabels = true;   % flag to determine whether to show node labels
   prevIdx = [];         % keeps track of 1st node clicked in creating edges
   selectIdx = [];       % used to highlight node selected in listbox
@@ -82,22 +91,13 @@ function draw_basic = draw_basic(npoly)
         if ishghandle(h.txt2)
             delete(h.txt2);
         end
-        if showLabels
-            %set(h.menu, 'Checked','on')
-            h.txt1 = text(pts(:,1)+0.01, pts(:,2)+0.01, ...
-                num2str((1:size(pts,1))'), ...
-                'HitTest','off', 'FontSize',8);
-            
-        else
-            %set(h.menu, 'Checked','off')
-        end
-        
+                
         
         if ~isempty(find(adj, 1))
             [xi,yi,val]=find(adj);
             h.txt2 = text((pts(xi,1)+pts(yi,1))/2, (pts(xi,2)+pts(yi,2))/2, ...
                 num2str( val), ...
-                'HitTest','off', 'FontSize',8);
+                'HitTest','off', 'FontSize',12);
         end
         
         % force refresh
